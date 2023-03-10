@@ -1,7 +1,9 @@
 package com.example.shoesstore.ui.ShoesList
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -66,7 +68,16 @@ class ShoeListFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment())
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment())
+                        Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
+                    }
+
+                    R.id.delete_all -> {
+                        deleteAllShoes()
+                    }
+                }
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -84,6 +95,7 @@ class ShoeListFragment : Fragment() {
         )
         // Swipe to Delete
         swipeToDelete(recyclerView)
+
     }
 
     private fun swipeToDelete(recyclerView: RecyclerView) {
@@ -108,6 +120,22 @@ class ShoeListFragment : Fragment() {
             mDataViewModel.insertData(deletedItem)
         }
         snackBar.show()
+    }
+
+    private fun deleteAllShoes() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes") { _, _ ->
+            mDataViewModel.deleteAll()
+            Toast.makeText(
+                requireContext(),
+                "Successfully removed everything!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete everything?")
+        builder.setMessage("Are you sure you want to remove everything?")
+        builder.create().show()
     }
 
     override fun onDestroyView() {
