@@ -28,7 +28,7 @@ class RegisterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        dataViewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         return binding.root
     }
@@ -36,24 +36,39 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // check if the user is already registered
         binding.registerBtn.setOnClickListener {
-            val firstName = binding.FirstNameEt.text.toString()
-            val lastName = binding.LastNameEt.text.toString()
             val userName = binding.UserNameEt.text.toString()
             val password = binding.passwordEt.text.toString()
-            val user = User(firstName = firstName, lastName = lastName, userName = userName, password = password)
-
-            dataViewModel.viewModelScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.IO) {
-                    dataViewModel.insertUser(user)
-                }
+            if (userName.isEmpty() || password.isEmpty()) {
+                Toast.makeText(context, "Please fill all the fields or Back", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                registerUser()
             }
-            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-            findNavController().navigate(action)
-            // toast("User Registered")
-            Toast.makeText(context, "User Registered Successfully", Toast.LENGTH_SHORT).show()
         }
-
     }
 
+    private fun registerUser() {
+        val firstName = binding.FirstNameEt.text.toString()
+        val lastName = binding.LastNameEt.text.toString()
+        val userName = binding.UserNameEt.text.toString()
+        val password = binding.passwordEt.text.toString()
+        val user = User(
+            firstName = firstName,
+            lastName = lastName,
+            userName = userName,
+            password = password
+        )
+
+        dataViewModel.viewModelScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                dataViewModel.insertUser(user)
+            }
+        }
+        val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+        findNavController().navigate(action)
+        Toast.makeText(context, "User Registered Successfully", Toast.LENGTH_SHORT).show()
+    }
 }
+

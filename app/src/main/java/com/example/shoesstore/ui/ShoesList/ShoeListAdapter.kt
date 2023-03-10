@@ -11,8 +11,7 @@ import com.example.shoesstore.model.ShoeListData
 
 class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
      var shoeList = emptyList<ShoeListData>()
-
-    class ShoeViewHolder(private val binding:ListViewBinding): RecyclerView.ViewHolder(binding.root) {
+    class ShoeViewHolder(val binding:ListViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(shoe: ShoeListData) {
             binding.shoeData =shoe
             binding.executePendingBindings()
@@ -36,12 +35,12 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
         //load image
-        val imageView = holder.itemView.findViewById<ImageView>(R.id.shoe_image)
+
         if (currentItem.shoeImageUri != null) {
-            Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(imageView)
+            Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(holder.binding.shoeImage)
         } else {
             // set a default image if shoeImageUri is null
-            Glide.with(holder.itemView.context).load(R.drawable.shoe_1).into(imageView)
+            Glide.with(holder.itemView.context).load(R.drawable.shoe_1).into(holder.binding.shoeImage)
         }
     }
 

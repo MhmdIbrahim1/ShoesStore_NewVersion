@@ -53,7 +53,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-
         binding.regBtn.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             findNavController().navigate(action)

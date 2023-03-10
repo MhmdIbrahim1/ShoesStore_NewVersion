@@ -14,11 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DataViewModel(application: Application) : AndroidViewModel(application) {
-    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
     fun checkIfDatabaseEmpty(shoeListData: List<ShoeListData>) {
         emptyDatabase.value = shoeListData.isEmpty()
     }
-
 
     private val shoeDao = ShoeDatabase.getDatabase(
         application
@@ -80,5 +79,4 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             null
         }
     }
-
 }

@@ -14,8 +14,8 @@ import com.example.shoesstore.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
     private lateinit var binding : ActivityMainBinding
-
     private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -28,4 +28,6 @@ class MainActivity : AppCompatActivity(){
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+
 }
