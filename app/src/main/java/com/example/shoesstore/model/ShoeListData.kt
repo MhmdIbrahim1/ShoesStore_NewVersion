@@ -6,7 +6,6 @@ import com.example.shoesstore.R
 import androidx.room.TypeConverters
 @Entity(tableName = "shoe_table")
 //add the converter annotation
-@TypeConverters(Converters::class)
 data class ShoeListData(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
@@ -15,4 +14,6 @@ data class ShoeListData(
     var shoeSize:String = "",
     var shoeDescription: String= "",
     var shoePrice: String = "",
+    var shoeImageUri: String? = null // new field for image
+
 )

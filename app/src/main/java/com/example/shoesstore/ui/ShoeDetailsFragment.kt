@@ -1,12 +1,9 @@
 package com.example.shoesstore.ui
 
-import android.app.Activity.RESULT_OK
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +15,10 @@ import com.example.shoesstore.R
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.databinding.FragmentShoeDetailsBinding
 import com.example.shoesstore.viewmodels.DataViewModel
-import kotlinx.android.synthetic.main.list_view.imageView3
 
 class ShoeDetailsFragment : Fragment() {
-//    private val IMAGE_PICK_REQUEST_CODE = 1
+    private var selectedImageUri: Uri? = null
+
     private val mDataViewModel: DataViewModel by viewModels()
     private var _binding: FragmentShoeDetailsBinding? = null
     private lateinit var newData: ShoeListData // Declare newData here
@@ -39,21 +36,37 @@ class ShoeDetailsFragment : Fragment() {
             insertDataToDb()
         }
 
-        return binding.root
+        binding.chooseImageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_IMAGE_PICK)
+        }
 
+        return binding.root
     }
-        private fun insertDataToDb() {
-            val mName = binding.nameEt.text.toString()
-            val mSize = binding.sizeEt.text.toString()
-            val mCompany = binding.companyEt.text.toString()
-            val mDescription = binding.descriptionEt.text.toString()
-            val mPrice = binding.shoePriceEt.text.toString()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            binding.prevImage.setImageURI(selectedImageUri)
+        }
+    }
+
+    private fun insertDataToDb() {
+        val mName = binding.nameEt.text.toString()
+        val mSize = binding.sizeEt.text.toString()
+        val mCompany = binding.companyEt.text.toString()
+        val mDescription = binding.descriptionEt.text.toString()
+        val mPrice = binding.shoePriceEt.text.toString()
+        val mImageUri = selectedImageUri?.toString() // get selected image uri as string
+
 
             val validation =
                 mDataViewModel.verifyData(mName, mSize, mCompany, mDescription, mPrice)
             if (validation) {
                 // Insert Data to Database
-                newData = ShoeListData(0, mName, mSize, mCompany, mDescription, mPrice)
+                newData = ShoeListData(0, mName, mSize, mCompany, mDescription, mPrice, mImageUri)
                 mDataViewModel.insertData(newData)
                 Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_SHORT).show()
                 // Navigate Back
@@ -67,6 +80,11 @@ class ShoeDetailsFragment : Fragment() {
             super.onDestroyView()
             _binding = null
         }
+
+    companion object {
+        private const val REQUEST_IMAGE_PICK = 1
     }
+
+}
 
 

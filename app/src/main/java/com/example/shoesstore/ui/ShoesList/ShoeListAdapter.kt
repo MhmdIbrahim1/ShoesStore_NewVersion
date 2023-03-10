@@ -1,11 +1,10 @@
 package com.example.shoesstore.ui.ShoesList
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.ListViewBinding
 import com.example.shoesstore.model.ShoeListData
@@ -36,7 +35,14 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
     override fun onBindViewHolder(holder: ShoeViewHolder, position: Int) {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
-
+        //load image
+        val imageView = holder.itemView.findViewById<ImageView>(R.id.shoe_image)
+        if (currentItem.shoeImageUri != null) {
+            Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(imageView)
+        } else {
+            // set a default image if shoeImageUri is null
+            Glide.with(holder.itemView.context).load(R.drawable.shoe_1).into(imageView)
+        }
     }
 
     override fun getItemCount(): Int {
