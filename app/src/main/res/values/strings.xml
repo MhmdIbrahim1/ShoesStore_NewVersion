@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">ShoeStoreApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_shoeApp">Welcome to ShoeApp</string>
+    <string name="todo">TODO</string>
+    <string name="user_name">User Name</string>
+    <string name="hint_user_name">User Name</string>
+    <string name="hint_password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+    <string name="welcomeMessage">\t\t\t\t\t\t Welcome in the shoeApp\n \t\t\t\t\t\t you can add a new item\n \t\t\t with its name, size and more! \n \t\t\t\t smoothly and wonderfully!\n \t\t\t\t\t So explore the app now</string>
+    <string name="InstructionMessage">\t\t\t\t\t\t\t\t Instructions\n You can add a new item by \t\t pressing the add button, entering your product data, saving it, and displaying it. In case you want to log out, click on the three dots in the menu and press logout</string>
+    <string name="next">Next</string>
+    <string name="logout_menu">Logout</string>
+    <string name="add_new_shoe">Add new shoe</string>
+    <string name="shoe_name">Name: </string>
+    <string name="shoe_size">Size: </string>
+    <string name="shoe_company">Company: </string>
+    <string name="description">Description: </string>
+    <string name="price">price: </string>
+    <string name="cancel_btn">Cancel</string>
+    <string name="save_btn">Save</string>
+    <string name="shoe_size_text">Shoe size</string>
+    <string name="shoe_company_text">Shoe Company</string>
+    <string name="shoe_description_text">Shoe Description</string>
+    <string name="todo_x">TODO</string>
+    <string name="image_of_shoe">Image of shoe</string>
+    <string name="company">Company: </string>
+    <string name="name">name</string>
+    <string name="name_shoe">Name</string>
+    <string name="size">Size: </string>
+    <string name="button">button</string>
+
+    <string name="username_hint">Username</string>
+    <string name="password">Password</string>
+    <string name="welcome_second">Thank you for Downloading our App
+        , we hope you enjoy our services!</string>
+    <string name="textview_2">To Add Item To Store ,We Need Some information about it like, The name Of Item ,The Price ,The Description ,Name Of The company,Wish You a Good Luck</string>
+    <string name="fab_content_desc">fab content</string>
+    <string name="girl_looks_at_the_phone">Girl Looks At The Phone</string>
+    <string name="username">Username</string>
+
+    <string name="girl_reading_the_instructions">Girl Reading The Instructions</string>
+    <string name="please_read_instruction_before_start">Please, read instruction before start,</string>
+    <string name="get_started">get started</string>
+    <string name="modern_shoe">Modern Shoe</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
+
+</resources>

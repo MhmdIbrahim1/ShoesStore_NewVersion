@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="corner_radius">25dp</dimen>
+    <dimen name="margin_top_edittext">30sp</dimen>
+    <dimen name="min_height">48dp</dimen>
+    <dimen name="padding_edittext">18dp</dimen>
+    <dimen name="margin_topimage">16dp</dimen>
+    <dimen name="margin_bot_img">85dp</dimen>
+    <dimen name="margin_top_tv">16dp</dimen>
+</resources>
