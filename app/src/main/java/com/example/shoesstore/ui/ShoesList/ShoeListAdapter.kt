@@ -11,7 +11,7 @@ import com.example.shoesstore.databinding.ListViewBinding
 import com.example.shoesstore.model.ShoeListData
 
 class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
-    private var shoeList = emptyList<ShoeListData>()
+     var shoeList = emptyList<ShoeListData>()
 
     class ShoeViewHolder(private val binding:ListViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(shoe: ShoeListData) {

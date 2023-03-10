@@ -34,6 +34,12 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteShoe(shoeListData: ShoeListData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteShoe(shoeListData)
+        }
+    }
+
 
     fun verifyData(shoeName: String ,shoeCompany: String ,shoeSize:String ,shoeDescription: String,shoePrice: String): Boolean {
         return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()

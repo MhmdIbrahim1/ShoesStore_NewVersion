@@ -12,12 +12,16 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentShoeListBinding
+import com.example.shoesstore.util.SwipeToDelete
 import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.viewmodels.DataViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class ShoeListFragment : Fragment() {
@@ -43,9 +47,7 @@ class ShoeListFragment : Fragment() {
 
      // Hide soft keyboard
      hideKeyboard(requireActivity())
-
         setUpRecyclerView()
-
         return binding.root
     }
 
@@ -69,19 +71,44 @@ class ShoeListFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-private fun setUpRecyclerView() {
-   val recyclerView = binding.shoeListRecyclerView
-    recyclerView.adapter = adapter
-    recyclerView.layoutManager =
-        StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-    binding.shoeListRecyclerView.addItemDecoration(
-        DividerItemDecoration(
-            requireContext(),
-            DividerItemDecoration.VERTICAL
+    private fun setUpRecyclerView() {
+       val recyclerView = binding.shoeListRecyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        binding.shoeListRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
         )
-    )
-}
-//create the shoe list view
+        // Swipe to Delete
+        swipeToDelete(recyclerView)
+    }
+
+    private fun swipeToDelete(recyclerView: RecyclerView) {
+        val swipeToDeleteCallback = object : SwipeToDelete() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem = adapter.shoeList[viewHolder.adapterPosition]
+                // Delete Item
+                mDataViewModel.deleteShoe(deletedItem)
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                restoreDeletedData(viewHolder.itemView, deletedItem)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+    private fun restoreDeletedData(view: View, deletedItem: ShoeListData) {
+        val snackBar = Snackbar.make(
+            view, "Deleted '${deletedItem.shoeName}'",
+            Snackbar.LENGTH_LONG
+        )
+        snackBar.setAction("Undo") {
+            mDataViewModel.insertData(deletedItem)
+        }
+        snackBar.show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

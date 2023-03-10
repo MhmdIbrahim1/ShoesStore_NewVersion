@@ -15,5 +15,4 @@ data class ShoeListData(
     var shoeSize:String = "",
     var shoeDescription: String= "",
     var shoePrice: String = "",
-   // val images: Int = R.drawable.shoe_1
 )
