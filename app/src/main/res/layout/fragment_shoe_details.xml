@@ -25,8 +25,9 @@
             android:hint="@string/name">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_et"
                 android:layout_width="match_parent"
-                android:text="@={shoe_list_details.shoeName}"
+                android:text=""
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,8 +40,9 @@
             android:hint="@string/size">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/size_et"
                 android:layout_width="match_parent"
-                android:text="@={shoe_list_details.shoeSize}"
+                android:text=""
 
                 android:layout_height="wrap_content" />
 
@@ -55,8 +57,9 @@
             android:hint="@string/company">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/company_et"
                 android:layout_width="match_parent"
-                android:text="@={shoe_list_details.shoeCompany}"
+                android:text=""
 
                 android:layout_height="wrap_content" />
 
@@ -71,8 +74,9 @@
             android:hint="@string/description">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description_et"
                 android:layout_width="match_parent"
-                android:text="@={shoe_list_details.shoeDescription}"
+                android:text=""
 
                 android:layout_height="wrap_content" />
 
@@ -87,9 +91,10 @@
             android:hint="@string/price">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/shoePrice_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={shoe_list_details.shoePrice}"  />
+                android:text=""  />
 
         </com.google.android.material.textfield.TextInputLayout>
 

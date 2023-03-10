@@ -6,56 +6,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.shoesstore.R
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.databinding.FragmentShoeDetailsBinding
 import com.example.shoesstore.viewmodels.DataViewModel
 
-class ShoeDetailsFragment : Fragment(){
-     private lateinit var dataViewModel : DataViewModel
-     private  var _binding: FragmentShoeDetailsBinding? = null
+class ShoeDetailsFragment : Fragment() {
+
+    private val mDataViewModel: DataViewModel by viewModels()
+    private var _binding: FragmentShoeDetailsBinding? = null
     private val binding get() = _binding!!
-     override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_details, container,false)
-        binding.shoeListDetails= ShoeListData()
-        dataViewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
+
+        _binding = FragmentShoeDetailsBinding.inflate(layoutInflater, container, false)
         binding.cancelBtnDetails.setOnClickListener {
             findNavController().navigateUp()
-          }
+        }
         binding.saveButton.setOnClickListener {
-            saveDetail()
+            insertDataToDb()
         }
         return binding.root
 
     }
-
-     private fun saveDetail() {
-         val bindingData = _binding?.shoeListDetails
-         val shoeName = bindingData?.shoeName.toString()
-         val shoeCompany = bindingData?.shoeCompany.toString()
-         val shoeDescription = bindingData?.shoeDescription.toString()
-         val shoeSize = bindingData?.shoeSize.toString()
-         val images = bindingData?.images
-         val price = bindingData?.shoePrice.toString()
-         if (shoeName.isEmpty()|| shoeSize.isEmpty()|| shoeCompany.isEmpty()|| shoeDescription.isEmpty() || price.isEmpty()){
-
-             Toast.makeText(context,"Please Fill The Empty Fields",Toast.LENGTH_SHORT).show()
-         }else{
-             Toast.makeText(context,"Saved",Toast.LENGTH_SHORT).show()
-             dataViewModel.onSave(shoeName, shoeSize, shoeCompany, shoeDescription, images!!, price)
-             findNavController().navigate(R.id.action_shoeDetailsFragment_to_shoeListFragment)
-         }
+    private fun insertDataToDb() {
+        val mName = binding.nameEt.text.toString()
+        val mSize = binding.sizeEt.text.toString()
+        val mCompany = binding.companyEt.text.toString()
+        val mDescription = binding.descriptionEt.text.toString()
+        val mPrice = binding.shoePriceEt.text.toString()
+        val validation =
+            mDataViewModel.verifyData(mName, mSize, mCompany, mDescription, mPrice)
+        if (validation) {
+            // Insert Data to Database
+            val newData = ShoeListData(0, mName, mSize, mCompany, mDescription, mPrice)
+            mDataViewModel.insertData(newData)
+            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_SHORT).show()
+            // Navigate Back
+            findNavController().navigate(R.id.action_shoeDetailsFragment_to_shoeListFragment)
+        } else {
+            Toast.makeText(requireContext(), "Please fill out all fields.", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
-
     override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+            super.onDestroyView()
+            _binding = null
+        }
     }
-}
+
+

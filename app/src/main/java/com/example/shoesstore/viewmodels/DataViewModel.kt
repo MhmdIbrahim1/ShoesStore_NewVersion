@@ -4,23 +4,40 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.shoesstore.model.ShoeDatabase
 import com.example.shoesstore.model.ShoeListData
+import com.example.shoesstore.model.ShoeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DataViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var shoesList = mutableListOf<ShoeListData>()
+    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    private var _shoeListLiveData =MutableLiveData<List<ShoeListData>>()
+    fun checkIfDatabaseEmpty(shoeListData: List<ShoeListData>) {
+        emptyDatabase.value = shoeListData.isEmpty()
+    }
 
-    val dataShoeList : LiveData<List<ShoeListData>>
-            get() =_shoeListLiveData
 
-    fun onSave(shoeName: String ,shoeCompany: String ,shoeSize:String ,shoeDescription: String,images: List<Int>, shoePrice: String){
-        val newItem = ShoeListData(shoeName,shoeCompany,shoeSize,shoeDescription,shoePrice,images)
-        newItem.let {
-            shoesList.add(it)
-            _shoeListLiveData.value = shoesList
+    private val shoeDao = ShoeDatabase.getDatabase(
+        application
+    ).shoeDao()
+
+    private val repository: ShoeRepository = ShoeRepository(shoeDao)
+
+    val getAllData: LiveData<List<ShoeListData>> = repository.getAllData
+
+    fun insertData(shoeListData: ShoeListData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertData(shoeListData)
         }
     }
+
+
+    fun verifyData(shoeName: String ,shoeCompany: String ,shoeSize:String ,shoeDescription: String,shoePrice: String): Boolean {
+        return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()
+    }
+
 
 }

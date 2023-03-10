@@ -5,6 +5,10 @@
 
     <data>
 
+            <variable
+                name="shoeData"
+                type="com.example.shoesstore.model.ShoeListData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,7 +45,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:src="@drawable/shoe_2" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -71,6 +75,7 @@
                     android:layout_marginEnd="12dp"
                     android:ellipsize="end"
                     android:maxLines="2"
+                    android:text="@{shoeData.shoeName}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -106,7 +111,7 @@
                     android:layout_marginEnd="12dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text=""
+                    android:text="@{shoeData.shoeCompany}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -143,7 +148,7 @@
                     android:layout_marginEnd="12dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text=""
+                    android:text="@{shoeData.shoeDescription}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -179,7 +184,7 @@
                     android:layout_marginEnd="12dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text=""
+                    android:text="@{shoeData.shoeSize}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -215,7 +220,7 @@
                     android:layout_marginEnd="12dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text=""
+                    android:text="@{shoeData.shoePrice}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
