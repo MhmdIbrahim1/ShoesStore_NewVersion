@@ -8,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.shoesstore.model.ShoeDatabase
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.model.ShoeRepository
+import com.example.shoesstore.model.UserModel.User
+import com.example.shoesstore.model.UserModel.UserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DataViewModel(application: Application) : AndroidViewModel(application) {
-
     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
-
     fun checkIfDatabaseEmpty(shoeListData: List<ShoeListData>) {
         emptyDatabase.value = shoeListData.isEmpty()
     }
@@ -51,5 +51,34 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()
     }
 
+    private val userDao = ShoeDatabase.getDatabase(
+        application
+    ).userDao()
+
+    suspend fun insertUser(user: User) {
+        val userEntity = UserEntity(
+            firstName = user.firstName,
+            lastName = user.lastName,
+            userName = user.userName,
+            password = user.password
+        )
+        userDao.insertUser(userEntity)
+    }
+
+
+    suspend fun getUser(userName: String, password: String): User?{
+        val userEntity = userDao.getUser(userName, password)
+        return if (userEntity != null) {
+            User(
+                id = userEntity.id,
+                firstName = userEntity.firstName,
+                lastName = userEntity.lastName,
+                userName = userEntity.userName,
+                password = userEntity.password
+            )
+        } else {
+            null
+        }
+    }
 
 }
