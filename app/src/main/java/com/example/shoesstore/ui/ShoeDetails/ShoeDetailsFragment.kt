@@ -1,4 +1,4 @@
-package com.example.shoesstore.ui
+package com.example.shoesstore.ui.ShoeDetails
 
 import android.app.Activity
 import android.content.Intent

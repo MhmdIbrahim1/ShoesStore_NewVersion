@@ -47,5 +47,8 @@
     <string name="modern_shoe">Modern Shoe</string>
     <string name="save">save</string>
     <string name="cancel">cancel</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>

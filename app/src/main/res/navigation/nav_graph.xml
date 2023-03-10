@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.shoesstore.ui.LoginFragment"
+        android:name="com.example.shoesstore.ui.LoginAndReg.LoginFragment"
         android:label="Shoe Store"
         tools:layout="@layout/fragment_login">
         <action
@@ -17,23 +17,31 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.sriyank.shoeapp.ui.WelcomeFragment"
+        android:name="com.example.shoesstore.ui.Welcome.WelcomeFragment"
         android:label="Shoe Store"
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/instructionsFragment"
-        android:name="com.example.shoesstore.ui.InstructionsFragment"
+        android:name="com.example.shoesstore.ui.Instruction.InstructionsFragment"
         android:label="Shoe Store"
         tools:layout="@layout/fragment_instructions">
         <action
@@ -66,12 +74,22 @@
     </fragment>
     <fragment
         android:id="@+id/shoeDetailsFragment"
-        android:name="com.example.shoesstore.ui.ShoeDetailsFragment"
+        android:name="com.example.shoesstore.ui.ShoeDetails.ShoeDetailsFragment"
         android:label="Add New Shoe">
         <action
             android:id="@+id/action_shoeDetailsFragment_to_shoeListFragment"
             app:destination="@id/shoeListFragment"
             app:popUpTo="@id/shoeListFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.shoesstore.ui.LoginAndReg.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>
