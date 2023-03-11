@@ -45,6 +45,9 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
+    fun searchDatabase(searchQuery: String): LiveData<List<ShoeListData>> {
+        return repository.searchDatabase(searchQuery)
+    }
 
     fun verifyData(shoeName: String ,shoeCompany: String ,shoeSize:String ,shoeDescription: String,shoePrice: String): Boolean {
         return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()

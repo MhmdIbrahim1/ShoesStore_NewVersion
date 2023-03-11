@@ -51,5 +51,7 @@
     <string name="last_name">Last Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="add">TODO</string>
+    <string name="search">Search</string>
+    <string name="delete_all_titlemenu">Delete All</string>
 
 </resources>

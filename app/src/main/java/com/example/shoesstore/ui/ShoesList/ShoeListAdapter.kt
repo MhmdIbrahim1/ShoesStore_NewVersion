@@ -2,8 +2,10 @@ package com.example.shoesstore.ui.ShoesList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.ListViewBinding
 import com.example.shoesstore.model.ShoeListData
@@ -33,8 +35,12 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
     override fun onBindViewHolder(holder: ShoeViewHolder, position: Int) {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
+//        // open shoe details fragment when a shoe is clicked
+//        holder.itemView.setOnClickListener {
+//            val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment()
+//            holder.itemView.findNavController().navigate(action)
+//        }
         //load image
-
         if (currentItem.shoeImageUri != null) {
             Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(holder.binding.shoeImage)
         } else {

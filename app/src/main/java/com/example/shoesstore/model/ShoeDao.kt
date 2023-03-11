@@ -21,4 +21,7 @@ interface ShoeDao {
     @Query("DELETE FROM shoe_table")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM shoe_table WHERE shoeName LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): LiveData<List<ShoeListData>>
+
 }

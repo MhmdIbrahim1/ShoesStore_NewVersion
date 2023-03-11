@@ -8,4 +8,9 @@
         android:id="@+id/detailFragment"
         android:icon="@drawable/add_nav"
         android:title="Add" />
+
+    <item
+        android:id="@+id/fav"
+        android:icon="@drawable/heart_bold"
+        android:title="Favorites" />
 </menu>

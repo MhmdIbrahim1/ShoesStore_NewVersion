@@ -16,5 +16,9 @@ class ShoeRepository(private val shoeDao: ShoeDao) {
 
     suspend fun deleteAll(){
             shoeDao.deleteAll()
-        }
+    }
+
+    fun searchDatabase(searchQuery: String): LiveData<List<ShoeListData>> {
+        return shoeDao.searchDatabase(searchQuery)
+    }
 }
