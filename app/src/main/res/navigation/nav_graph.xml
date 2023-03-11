@@ -71,6 +71,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/shoeListFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_shoeListFragment_self2"
+            app:destination="@id/shoeListFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoeDetailsFragment"

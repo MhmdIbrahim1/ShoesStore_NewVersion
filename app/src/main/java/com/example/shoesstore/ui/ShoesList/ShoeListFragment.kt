@@ -38,13 +38,28 @@ class ShoeListFragment : Fragment() {
        _binding = FragmentShoeListBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = this
 
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.detailFragment -> {
+                    // Handle add menu item click here
+                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment())
+                    true
+                }
+                // Handle other menu items here if necessary
+                R.id.listFragment -> {
+                    // Handle add menu item click here
+                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentSelf2())
+                    true
+                }
+                else -> false
+            }
+        }
         // Observe LiveData
         mDataViewModel.getAllData.observe(viewLifecycleOwner) { data ->
             mDataViewModel.checkIfDatabaseEmpty(data)
             adapter.setData(data)
             binding.shoeListRecyclerView.scheduleLayoutAnimation()
         }
-
      // Hide soft keyboard
      hideKeyboard(requireActivity())
         setUpRecyclerView()
@@ -53,9 +68,6 @@ class ShoeListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.addBtn.setOnClickListener{
-            view.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_shoeListFragment_to_shoeDetailsFragment) }
-        }
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
 
