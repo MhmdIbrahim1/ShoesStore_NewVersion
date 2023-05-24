@@ -16,7 +16,9 @@ This App has been developed as part of the Udacity Android Kotlin Developer Nano
 |Instruction Screen|List|add|search|
 |---|---|---|---|
 |![instruction](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/21ea30e6-227a-4055-bf4b-f9afc3a6fa39)|![list](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/3bbcf2b0-3629-49a6-8bf3-e1bd48268fbc)|![add](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/05ec632f-97e1-4afd-8309-b61381b224cb)
-|![search](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/87d949cb-8361-47ef-81a7-e201f0124f4f)
+|![search](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/87d949cb-8361-47ef-81a7-e201f0124f4f)|![menu](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/df5567f6-440a-4af5-853b-a129b3d41262)|![d](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/e99989eb-61b4-4ba4-a1ec-f288b3b474e5)
+
+
 ---
 
 ## Rubric followed for the Project
