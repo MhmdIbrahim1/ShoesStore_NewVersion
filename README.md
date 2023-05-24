@@ -10,9 +10,11 @@ This App has been developed as part of the Udacity Android Kotlin Developer Nano
 * Shoe list
 * Shoe detail
 
-|Login|Register|Welcome screen |Instruction screen |
-|---|---|---|---|
+|Login|Register|Welcome screen |
+|---|---|---|
 |![Login](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/fb5d9965-9530-4171-be83-416dd7ffaa68)|![reg](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/55d32078-abec-4288-a42d-0a05406f9400)|![welcome](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/4d8080ab-c551-495e-8998-713bb57a3e9b)
+|Instruction Screen|List|add|search|
+|---|---|---|---|
 |![instruction](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/21ea30e6-227a-4055-bf4b-f9afc3a6fa39)|![list](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/3bbcf2b0-3629-49a6-8bf3-e1bd48268fbc)|![add](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/05ec632f-97e1-4afd-8309-b61381b224cb)
 |![search](https://github.com/MhmdIbrahim1/ShoesStore_NewVersion/assets/107378571/87d949cb-8361-47ef-81a7-e201f0124f4f)
 ---
