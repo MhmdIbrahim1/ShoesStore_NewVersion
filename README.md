@@ -6,7 +6,7 @@ This App has been developed as part of the Udacity Android Kotlin Developer Nano
 * Login
 * Regiester
 * Welcome
-* Instruccions
+* Instruction
 * Shoe list
 * Shoe detail
 
