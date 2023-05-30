@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -41,6 +42,8 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
        _binding = FragmentShoeListBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // Hide the back arrow in the ActionBar
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -106,11 +109,11 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+
     override fun onResume() {
         super.onResume()
         // Update the selected navBottom icon when the fragment is resumed
         binding.bottomNavigationView.selectedItemId = R.id.listFragment
-
     }
 
     private fun setUpRecyclerView() {
