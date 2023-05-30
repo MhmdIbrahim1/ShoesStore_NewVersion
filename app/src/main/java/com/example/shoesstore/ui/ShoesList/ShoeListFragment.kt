@@ -41,33 +41,38 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
        _binding = FragmentShoeListBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+
+        binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detailFragment -> {
-                    // Handle add menu item click here
                     findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment())
                     true
                 }
-                // Handle other menu items here if necessary
                 R.id.listFragment -> {
-                    // Handle add menu item click here
-                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentSelf2())
+                    // Already in the desired fragment, no navigation needed
+                    true
+                }
+                R.id.favFragment -> {
+                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment())
                     true
                 }
                 else -> false
             }
         }
+
         // Observe LiveData
-        mDataViewModel.getAllData.observe(viewLifecycleOwner) { data ->
-            mDataViewModel.checkIfDatabaseEmpty(data)
-            adapter.setData(data)
-            binding.shoeListRecyclerView.scheduleLayoutAnimation()
-        }
+            mDataViewModel.getAllData.observe(viewLifecycleOwner) { data ->
+                mDataViewModel.checkIfDatabaseEmpty(data)
+                adapter.setData(data)
+                binding.shoeListRecyclerView.scheduleLayoutAnimation()
+            }
+
      // Hide soft keyboard
      hideKeyboard(requireActivity())
         setUpRecyclerView()
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,9 +102,16 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
                 }
                 return true
             }
+
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Update the selected navBottom icon when the fragment is resumed
+        binding.bottomNavigationView.selectedItemId = R.id.listFragment
+
+    }
 
     private fun setUpRecyclerView() {
        val recyclerView = binding.shoeListRecyclerView

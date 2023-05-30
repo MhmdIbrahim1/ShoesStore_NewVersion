@@ -35,11 +35,11 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
     override fun onBindViewHolder(holder: ShoeViewHolder, position: Int) {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
-//        // open shoe details fragment when a shoe is clicked
-//        holder.itemView.setOnClickListener {
-//            val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment()
-//            holder.itemView.findNavController().navigate(action)
-//        }
+        // open shoe information fragment when a shoe is clicked
+        holder.itemView.setOnClickListener {
+            val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment()
+            holder.itemView.findNavController().navigate(action)
+        }
         //load image
         if (currentItem.shoeImageUri != null) {
             Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(holder.binding.shoeImage)

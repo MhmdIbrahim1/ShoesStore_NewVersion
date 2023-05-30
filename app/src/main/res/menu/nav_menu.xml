@@ -10,7 +10,7 @@
         android:title="Add" />
 
     <item
-        android:id="@+id/fav"
+        android:id="@+id/favFragment"
         android:icon="@drawable/baseline_favorite_24"
         android:title="Favorites" />
 </menu>

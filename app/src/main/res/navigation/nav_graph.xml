@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_shoeListFragment_self2"
             app:destination="@id/shoeListFragment" />
+        <action
+            android:id="@+id/action_shoeListFragment_to_shoeInfoFragment"
+            app:destination="@id/shoeInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoeDetailsFragment"
@@ -94,5 +97,14 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/shoeInfoFragment"
+        android:name="com.example.shoesstore.ui.ShoesList.ShoeInfoFragment"
+        android:label="fragment_shoe_info"
+        tools:layout="@layout/fragment_shoe_info" >
+        <action
+            android:id="@+id/action_shoeInfoFragment_to_shoeListFragment"
+            app:destination="@id/shoeListFragment" />
     </fragment>
 </navigation>
