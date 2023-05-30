@@ -21,7 +21,6 @@ abstract class ShoeDatabase: RoomDatabase() {
                    database.execSQL("ALTER TABLE shoe_table ADD COLUMN shoePrice TEXT NOT NULL DEFAULT ''")
             }
         }
-
         fun getDatabase(context: Context): ShoeDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
