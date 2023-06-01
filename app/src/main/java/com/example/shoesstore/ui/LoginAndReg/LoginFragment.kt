@@ -36,21 +36,23 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginBtn.setOnClickListener {
-            val userName = binding.userNameEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
-
-            dataViewModel.viewModelScope.launch {
-                val user = withContext(Dispatchers.IO) {
-                    dataViewModel.getUser(userName, password)
-                }
-                if (user != null) {
-                    val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
-                    findNavController().navigate(action)
-                } else {
-                    binding.userNameEditText.error = "User not found"
-                    Toast.makeText(context, "Register or enter a valid username and password ", Toast.LENGTH_SHORT).show()
-                }
-            }
+//            val userName = binding.userNameEditText.text.toString()
+//            val password = binding.passwordEditText.text.toString()
+//
+//            dataViewModel.viewModelScope.launch {
+//                val user = withContext(Dispatchers.IO) {
+//                    dataViewModel.getUser(userName, password)
+//                }
+//                if (user != null) {
+//                    val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
+//                    findNavController().navigate(action)
+//                } else {
+//                    binding.userNameEditText.error = "User not found"
+//                    Toast.makeText(context, "Register or enter a valid username and password ", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+        val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
+        findNavController().navigate(action)
         }
 
         binding.regBtn.setOnClickListener {
