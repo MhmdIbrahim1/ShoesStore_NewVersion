@@ -14,6 +14,8 @@ data class ShoeListData(
     var shoeSize:String = "",
     var shoeDescription: String= "",
     var shoePrice: String = "",
-    var shoeImageUri: String? = null // new field for image
+    var shoeImageUri: String? = null, // new field for image
+    var isFavorite: Boolean = false
+
 
 )

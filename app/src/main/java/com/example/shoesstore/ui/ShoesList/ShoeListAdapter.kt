@@ -1,32 +1,63 @@
 package com.example.shoesstore.ui.ShoesList
 
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.engine.Resource
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.ListViewBinding
+import com.example.shoesstore.model.ShoeDatabase
 import com.example.shoesstore.model.ShoeListData
+import com.example.shoesstore.viewmodels.DataViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
      var shoeList = emptyList<ShoeListData>()
-    class ShoeViewHolder(val binding:ListViewBinding): RecyclerView.ViewHolder(binding.root) {
+    class ShoeViewHolder(val binding: ListViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(shoe: ShoeListData) {
-            binding.shoeData =shoe
+            binding.shoeData = shoe
             binding.executePendingBindings()
-    }
-        companion object{
+        }
+
+        companion object {
             fun from(parent: ViewGroup): ShoeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListViewBinding.inflate(layoutInflater, parent, false)
-                return ShoeViewHolder(
-                    binding
-                )
+                return ShoeViewHolder(binding)
             }
         }
+
+        // Make the favButton filled when clicked and update the database
+        fun favButtonClicked(shoe: ShoeListData) {
+            binding.favButton.setOnClickListener {
+                shoe.isFavorite = !shoe.isFavorite // Toggle the favorite state
+
+                // Update the UI based on the favorite state
+                if (shoe.isFavorite) {
+                    binding.favButton.setImageResource(R.drawable.ic_favorite_filled)
+                } else {
+                    binding.favButton.setImageResource(R.drawable.ic_favorite_bordered)
+                }
+
+                // Update the shoe in the database
+             //   updateShoeInDatabase(shoe)
+            }
+        }
+
+//        private fun updateShoeInDatabase(shoe: ShoeListData) {
+//            }
+//
+
     }
+
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoeViewHolder {
         return ShoeViewHolder.from(parent)
@@ -35,7 +66,11 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
     override fun onBindViewHolder(holder: ShoeViewHolder, position: Int) {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
+
+        // call favButtonClicked function when the favButton is clicked
+        holder.favButtonClicked(currentItem)
         // open shoe information fragment when a shoe is clicked
+
         holder.itemView.setOnClickListener {
             val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment()
             holder.itemView.findNavController().navigate(action)
@@ -47,7 +82,10 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
             // set a default image if shoeImageUri is null
             Glide.with(holder.itemView.context).load(R.drawable.shoe_1).into(holder.binding.shoeImage)
         }
+
+
     }
+
 
     override fun getItemCount(): Int {
         return shoeList.size
@@ -55,7 +93,11 @@ class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
 
     fun setData(shoe: List<ShoeListData>) {
         this.shoeList = shoe
+
         notifyDataSetChanged()
     }
+
+
+
 
 }

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ShoeDao {
@@ -23,5 +24,8 @@ interface ShoeDao {
 
     @Query("SELECT * FROM shoe_table WHERE shoeName LIKE :searchQuery")
     fun searchDatabase(searchQuery: String): LiveData<List<ShoeListData>>
+
+    @Update
+    suspend fun updateShoe(shoeListData: ShoeListData)
 
 }

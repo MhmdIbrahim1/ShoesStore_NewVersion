@@ -53,9 +53,17 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()
     }
 
+
+    fun updateShoe(shoeListData: ShoeListData){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateShoe(shoeListData)
+        }
+    }
+
     private val userDao = ShoeDatabase.getDatabase(
         application
     ).userDao()
+
 
     suspend fun insertUser(user: User) {
         val userEntity = UserEntity(
@@ -82,4 +90,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             null
         }
     }
+
+
 }

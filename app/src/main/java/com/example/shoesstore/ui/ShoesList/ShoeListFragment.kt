@@ -4,11 +4,13 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -21,67 +23,78 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentShoeListBinding
+import com.example.shoesstore.databinding.ListViewBinding
 import com.example.shoesstore.util.SwipeToDelete
 import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.util.observeOnce
 import com.example.shoesstore.viewmodels.DataViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.list_view.favButton
 
 
 class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
-    private  var _binding: FragmentShoeListBinding? = null
-    private val binding get() = _binding!!
-    private  val mDataViewModel: DataViewModel by viewModels()
-    private val adapter: ShoeListAdapter  by lazy { ShoeListAdapter() }
 
+    // Binding object instance corresponding to the fragment_shoe_list.xml layout
+    private var _binding: FragmentShoeListBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var newData: ShoeListData // Declare newData here
+
+    private val mDataViewModel: DataViewModel by viewModels()
+    private val adapter: ShoeListAdapter by lazy { ShoeListAdapter() }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
         // Inflate the layout for this fragment
-       _binding = FragmentShoeListBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentShoeListBinding.inflate(layoutInflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-
         // Hide the back arrow in the ActionBar
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detailFragment -> {
                     findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment())
                     true
                 }
+
                 R.id.listFragment -> {
                     // Already in the desired fragment, no navigation needed
                     true
                 }
+
                 R.id.favFragment -> {
                     findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment())
                     true
                 }
+
                 else -> false
             }
         }
-
         // Observe LiveData
-            mDataViewModel.getAllData.observe(viewLifecycleOwner) { data ->
-                mDataViewModel.checkIfDatabaseEmpty(data)
-                adapter.setData(data)
-                binding.shoeListRecyclerView.scheduleLayoutAnimation()
-            }
+        mDataViewModel.getAllData.observe(viewLifecycleOwner) { data ->
+            mDataViewModel.checkIfDatabaseEmpty(data)
+            adapter.setData(data)
+            binding.shoeListRecyclerView.scheduleLayoutAnimation()
+        }
 
-     // Hide soft keyboard
-     hideKeyboard(requireActivity())
+        // Hide soft keyboard
+        hideKeyboard(requireActivity())
         setUpRecyclerView()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Update the selected navBottom icon when the fragment is resumed
+        binding.bottomNavigationView.selectedItemId = R.id.listFragment
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Set adapter for the ListView
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
-
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
@@ -106,15 +119,12 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
                 return true
             }
 
+
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
 
 
-    override fun onResume() {
-        super.onResume()
-        // Update the selected navBottom icon when the fragment is resumed
-        binding.bottomNavigationView.selectedItemId = R.id.listFragment
     }
+
 
     private fun setUpRecyclerView() {
        val recyclerView = binding.shoeListRecyclerView
@@ -145,6 +155,8 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
+
+
     private fun restoreDeletedData(view: View, deletedItem: ShoeListData) {
         val snackBar = Snackbar.make(
             view, "Deleted '${deletedItem.shoeName}'",
@@ -201,5 +213,9 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+
 
 }

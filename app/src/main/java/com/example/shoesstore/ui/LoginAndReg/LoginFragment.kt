@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
 
-   private lateinit var binding: FragmentLoginBinding
+    private lateinit var binding: FragmentLoginBinding
     private lateinit var dataViewModel: DataViewModel
 
 
@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_login, container, false)
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        dataViewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
         return binding.root
     }
 
@@ -36,26 +36,28 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginBtn.setOnClickListener {
-            val userName = binding.userNameEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+//            val userName = binding.userNameEditText.text.toString()
+//            val password = binding.passwordEditText.text.toString()
 
-            dataViewModel.viewModelScope.launch {
-                val user = withContext(Dispatchers.IO) {
-                    dataViewModel.getUser(userName, password)
-                }
-                if (user != null) {
-                    val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
-                    findNavController().navigate(action)
-                } else {
-                    binding.userNameEditText.error = "User not found"
-                    Toast.makeText(context, "Register or enter a valid username and password ", Toast.LENGTH_SHORT).show()
-                }
+//            dataViewModel.viewModelScope.launch {
+//                val user = withContext(Dispatchers.IO) {
+//                    dataViewModel.getUser(userName, password)
+//                }
+//                if (user != null) {
+                val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
+                findNavController().navigate(action)
+//                } else {
+//                    binding.userNameEditText.error = "User not found"
+//                    Toast.makeText(context, "Register or enter a valid username and password ", Toast.LENGTH_SHORT).show()
+//                }
             }
-        }
+        //}
+
 
         binding.regBtn.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             findNavController().navigate(action)
         }
+
     }
 }

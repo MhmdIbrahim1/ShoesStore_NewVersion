@@ -21,4 +21,8 @@ class ShoeRepository(private val shoeDao: ShoeDao) {
     fun searchDatabase(searchQuery: String): LiveData<List<ShoeListData>> {
         return shoeDao.searchDatabase(searchQuery)
     }
+
+    suspend fun updateShoe(shoeListData: ShoeListData){
+        shoeDao.updateShoe(shoeListData)
+    }
 }

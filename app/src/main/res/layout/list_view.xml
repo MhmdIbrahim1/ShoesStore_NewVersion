@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
             <variable
                 name="shoeData"
                 type="com.example.shoesstore.model.ShoeListData" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -228,6 +226,26 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView11"
                     app:layout_constraintTop_toBottomOf="@+id/shoeCompany" />
+
+                <!--  add delete button              -->
+
+                <ImageView
+                    android:id="@+id/favButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/fav"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.951"
+                    app:layout_constraintStart_toEndOf="@+id/shoe_image"
+                    app:layout_constraintTop_toBottomOf="@+id/shoePrice"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_favorite_bordered"
+                    app:tint="#AB1919"
+                    />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,5 +53,7 @@
     <string name="add">TODO</string>
     <string name="search">Search</string>
     <string name="delete_all_titlemenu">Delete All</string>
+    <string name="fav">fav</string>
+    <string name="delete_button">Delete Button</string>
 
 </resources>
