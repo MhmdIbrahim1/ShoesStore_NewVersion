@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentShoeListBinding
+import com.example.shoesstore.ui.ShoesList.adapter.ShoeListAdapter
 import com.example.shoesstore.util.SwipeToDelete
 import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.util.observeOnce
@@ -38,11 +39,13 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
     }
 
 
-
     private val mDataViewModel: DataViewModel by viewModels()
+    // Set the adapter on the view model
+
     private val adapter: ShoeListAdapter by lazy {
         ShoeListAdapter().apply {
             setOnDeleteClickListener(this@ShoeListFragment)
+            viewModel = mDataViewModel
         }
     }
     override fun onCreateView(

@@ -10,6 +10,7 @@ import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.model.ShoeRepository
 import com.example.shoesstore.model.UserModel.User
 import com.example.shoesstore.model.UserModel.UserEntity
+import com.example.shoesstore.ui.ShoesList.adapter.ShoeListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -53,10 +54,12 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         return shoeName.isNotEmpty() && shoeCompany.isNotEmpty() && shoeSize.isNotEmpty() && shoeDescription.isNotEmpty()  && shoePrice.isNotEmpty()
     }
 
+    // Setter method for the adapter
 
     fun updateShoe(shoeListData: ShoeListData){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateShoe(shoeListData)
+
         }
     }
 

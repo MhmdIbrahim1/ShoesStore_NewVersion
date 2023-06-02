@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/shoeListFragment"
         android:name="com.example.shoesstore.ui.ShoesList.ShoeListFragment"
-        android:label="Shoe Store">
+        android:label="ShoesIn">
         <action
             android:id="@+id/action_shoeListFragment_to_shoeDetailsFragment"
             app:destination="@id/shoeDetailsFragment"
@@ -76,7 +76,7 @@
             app:destination="@id/shoeListFragment" />
         <action
             android:id="@+id/action_shoeListFragment_to_shoeInfoFragment"
-            app:destination="@id/shoeInfoFragment" />
+            app:destination="@id/shoeFavoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/shoeDetailsFragment"
@@ -99,10 +99,10 @@
             app:popUpToInclusive="false" />
     </fragment>
     <fragment
-        android:id="@+id/shoeInfoFragment"
-        android:name="com.example.shoesstore.ui.ShoesList.ShoeInfoFragment"
-        android:label="fragment_shoe_info"
-        tools:layout="@layout/fragment_shoe_info" >
+        android:id="@+id/shoeFavoriteFragment"
+        android:name="com.example.shoesstore.ui.ShoesList.ShoeFavoriteFragment"
+        android:label="Favorite Shoes"
+        tools:layout="@layout/fragment_shoe_favorite" >
         <action
             android:id="@+id/action_shoeInfoFragment_to_shoeListFragment"
             app:destination="@id/shoeListFragment" />
