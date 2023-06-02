@@ -4,17 +4,14 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,24 +20,31 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentShoeListBinding
-import com.example.shoesstore.databinding.ListViewBinding
 import com.example.shoesstore.util.SwipeToDelete
 import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.util.observeOnce
 import com.example.shoesstore.viewmodels.DataViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.list_view.favButton
 
 
-class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
+class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAdapter.OnDeleteClickListener {
 
     // Binding object instance corresponding to the fragment_shoe_list.xml layout
     private var _binding: FragmentShoeListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var newData: ShoeListData // Declare newData here
+
+    override fun onDeleteClick(deletedItem: ShoeListData) {
+        mDataViewModel.deleteShoe(deletedItem)
+    }
+
+
 
     private val mDataViewModel: DataViewModel by viewModels()
-    private val adapter: ShoeListAdapter by lazy { ShoeListAdapter() }
+    private val adapter: ShoeListAdapter by lazy {
+        ShoeListAdapter().apply {
+            setOnDeleteClickListener(this@ShoeListFragment)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -213,9 +217,5 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-
 
 }

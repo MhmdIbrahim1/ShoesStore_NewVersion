@@ -1,103 +1,107 @@
 package com.example.shoesstore.ui.ShoesList
 
-import android.app.Application
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.Resource
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.ListViewBinding
-import com.example.shoesstore.model.ShoeDatabase
 import com.example.shoesstore.model.ShoeListData
-import com.example.shoesstore.viewmodels.DataViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class ShoeListAdapter: RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
-     var shoeList = emptyList<ShoeListData>()
-    class ShoeViewHolder(val binding: ListViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(shoe: ShoeListData) {
-            binding.shoeData = shoe
-            binding.executePendingBindings()
-        }
+class ShoeListAdapter : RecyclerView.Adapter<ShoeListAdapter.ShoeViewHolder>() {
+    var shoeList = emptyList<ShoeListData>()
+    private var onDeleteClickListener: OnDeleteClickListener? = null
 
-        companion object {
-            fun from(parent: ViewGroup): ShoeViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListViewBinding.inflate(layoutInflater, parent, false)
-                return ShoeViewHolder(binding)
-            }
-        }
-
-        // Make the favButton filled when clicked and update the database
-        fun favButtonClicked(shoe: ShoeListData) {
-            binding.favButton.setOnClickListener {
-                shoe.isFavorite = !shoe.isFavorite // Toggle the favorite state
-
-                // Update the UI based on the favorite state
-                if (shoe.isFavorite) {
-                    binding.favButton.setImageResource(R.drawable.ic_favorite_filled)
-                } else {
-                    binding.favButton.setImageResource(R.drawable.ic_favorite_bordered)
-                }
-
-                // Update the shoe in the database
-             //   updateShoeInDatabase(shoe)
-            }
-        }
-
-//        private fun updateShoeInDatabase(shoe: ShoeListData) {
-//            }
-//
-
+    interface OnDeleteClickListener {
+        fun onDeleteClick(deletedItem: ShoeListData)
     }
 
+    fun setData(shoeList: List<ShoeListData>) {
+        this.shoeList = shoeList
+        notifyDataSetChanged()
+    }
 
-
+    fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+        onDeleteClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoeViewHolder {
-        return ShoeViewHolder.from(parent)
+        val binding = ListViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ShoeViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ShoeViewHolder, position: Int) {
         val currentItem = shoeList[position]
         holder.bind(currentItem)
-
-        // call favButtonClicked function when the favButton is clicked
-        holder.favButtonClicked(currentItem)
-        // open shoe information fragment when a shoe is clicked
-
-        holder.itemView.setOnClickListener {
-            val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment()
-            holder.itemView.findNavController().navigate(action)
-        }
-        //load image
-        if (currentItem.shoeImageUri != null) {
-            Glide.with(holder.itemView.context).load(currentItem.shoeImageUri).into(holder.binding.shoeImage)
-        } else {
-            // set a default image if shoeImageUri is null
-            Glide.with(holder.itemView.context).load(R.drawable.shoe_1).into(holder.binding.shoeImage)
-        }
-
-
     }
-
 
     override fun getItemCount(): Int {
         return shoeList.size
     }
 
-    fun setData(shoe: List<ShoeListData>) {
-        this.shoeList = shoe
+    inner class ShoeViewHolder(private val binding: ListViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        notifyDataSetChanged()
+        init {
+            binding.deleteButton.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val deletedItem = shoeList[position]
+                    // Show confirmation dialog
+                    showConfirmationDialog(deletedItem)
+
+                }
+            }
+
+
+            binding.favButton.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val shoe = shoeList[position]
+                    shoe.isFavorite = !shoe.isFavorite // Toggle the favorite state
+
+                    // Update the UI based on the favorite state
+                    val favoriteIconRes = if (shoe.isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_bordered
+                    binding.favButton.setImageResource(favoriteIconRes)
+                }
+            }
+
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    // Remove the shoe argument from the action method
+                    val action = ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment()
+                    it.findNavController().navigate(action)
+                }
+            }
+
+        }
+
+        fun bind(shoe: ShoeListData) {
+            binding.shoeData = shoe
+            Glide.with(binding.root.context)
+                .load(shoe.shoeImageUri ?: R.drawable.shoe_1)
+                .into(binding.shoeImage)
+        }
+
+        private fun showConfirmationDialog(deletedItem: ShoeListData) {
+            val alertDialog = AlertDialog.Builder(binding.root.context)
+                .setTitle("Confirmation")
+                .setMessage("Are you sure you want to remove this item?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    // User confirmed, delete the item
+                    onDeleteClickListener?.onDeleteClick(deletedItem)
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+            alertDialog.show()
+        }
     }
-
-
 
 
 }

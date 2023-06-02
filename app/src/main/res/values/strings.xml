@@ -55,5 +55,6 @@
     <string name="delete_all_titlemenu">Delete All</string>
     <string name="fav">fav</string>
     <string name="delete_button">Delete Button</string>
+    <string name="delete">deleteItem</string>
 
 </resources>
