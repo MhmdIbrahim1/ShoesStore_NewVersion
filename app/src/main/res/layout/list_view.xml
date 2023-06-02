@@ -248,13 +248,14 @@
                     />
 
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/deleteButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
                     android:clickable="true"
+                    android:backgroundTint="@color/white"
                     android:contentDescription="@string/delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -262,7 +263,7 @@
                     app:layout_constraintStart_toEndOf="@+id/shoe_image"
                     app:layout_constraintTop_toBottomOf="@+id/shoePrice"
                     app:layout_constraintVertical_bias="1.0"
-                    app:srcCompat="@drawable/ic_delete"
+                    app:srcCompat="@drawable/_delete_outline_"
                     app:tint="#1A1B1A" />
 
 
