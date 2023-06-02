@@ -98,17 +98,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/choose_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/upload_image"
             android:text="choose image" />
 
         <ImageView
             android:id="@+id/prev_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/shoe_1" />
 
         <LinearLayout
