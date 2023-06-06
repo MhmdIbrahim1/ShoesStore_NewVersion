@@ -56,5 +56,7 @@
     <string name="fav">fav</string>
     <string name="delete_button">Delete Button</string>
     <string name="delete">deleteItem</string>
+    <string name="show_password">Show Paswword\n</string>
+    <string name="email">Email\n</string>
 
 </resources>

@@ -9,8 +9,6 @@ import com.example.shoesstore.model.ShoeDatabase
 import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.model.ShoeRepository
 import com.example.shoesstore.model.UserModel.User
-import com.example.shoesstore.model.UserModel.UserEntity
-import com.example.shoesstore.ui.ShoesList.adapter.ShoeListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -62,37 +60,4 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
         }
     }
-
-    private val userDao = ShoeDatabase.getDatabase(
-        application
-    ).userDao()
-
-
-    suspend fun insertUser(user: User) {
-        val userEntity = UserEntity(
-            firstName = user.firstName,
-            lastName = user.lastName,
-            userName = user.userName,
-            password = user.password
-        )
-        userDao.insertUser(userEntity)
-    }
-
-
-    suspend fun getUser(userName: String, password: String): User?{
-        val userEntity = userDao.getUser(userName, password)
-        return if (userEntity != null) {
-            User(
-                id = userEntity.id,
-                firstName = userEntity.firstName,
-                lastName = userEntity.lastName,
-                userName = userEntity.userName,
-                password = userEntity.password
-            )
-        } else {
-            null
-        }
-    }
-
-
 }

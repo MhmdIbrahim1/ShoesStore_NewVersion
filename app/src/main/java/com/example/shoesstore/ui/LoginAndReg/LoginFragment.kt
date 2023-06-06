@@ -1,5 +1,6 @@
 package com.example.shoesstore.ui.LoginAndReg
 
+import com.example.shoesstore.FirebaseAuth.FirebaseManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.shoesstore.databinding.FragmentLoginBinding
@@ -36,28 +38,33 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginBtn.setOnClickListener {
-            val userName = binding.userNameEditText.text.toString()
+            val email = binding.userNameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            dataViewModel.viewModelScope.launch {
-                val user = withContext(Dispatchers.IO) {
-                    dataViewModel.getUser(userName, password)
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
+            } else {
+                val firebaseManager = FirebaseManager()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        firebaseManager.loginUser(email, password)
+                        withContext(Dispatchers.Main) {
+                            val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
+                            findNavController().navigate(action)
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            binding.userNameEditText.error = "Login failed!! Invalid Email or Password"
+                        }
+                    }
                 }
-                if (user != null) {
-            val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment()
-            findNavController().navigate(action)
-                } else {
-                    binding.userNameEditText.error = "User not found"
-                    Toast.makeText(context, "Register or enter a valid username and password ", Toast.LENGTH_SHORT).show()
-                }
+            }
         }
-    }
-
 
         binding.regBtn.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             findNavController().navigate(action)
         }
-
     }
+
 }
