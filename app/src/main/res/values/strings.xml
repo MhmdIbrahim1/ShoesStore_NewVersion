@@ -59,4 +59,6 @@
     <string name="show_password">Show Paswword\n</string>
     <string name="email">Email\n</string>
 
+    <string name="google_client_id">264025109078-amdqen3c0bns49opluk42eka068hivbc.apps.googleusercontent.com</string>
+
 </resources>

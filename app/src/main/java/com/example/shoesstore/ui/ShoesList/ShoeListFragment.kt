@@ -26,6 +26,7 @@ import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.util.observeOnce
 import com.example.shoesstore.viewmodels.DataViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 
 class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAdapter.OnDeleteClickListener {
@@ -115,6 +116,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.logout -> {
+                        FirebaseAuth.getInstance().signOut()
                         findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment())
                         Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
                     }

@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-    private lateinit var dataViewModel: DataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +26,6 @@ class RegisterFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         return binding.root
     }
@@ -35,17 +33,22 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // check if the user is already registered
         binding.registerBtn.setOnClickListener {
             val userName = binding.UserNameEt.text.toString()
             val password = binding.passwordEt.text.toString()
             if (userName.isEmpty() || password.isEmpty()) {
                 Toast.makeText(context, "Please fill all the fields or Back", Toast.LENGTH_SHORT)
                     .show()
-            } else {
+            } else if (password.length < 6) {
+                binding.passwordEt.error = "Password must be at least 6 characters"
+            }
+            else {
                 registerUser()
             }
+            // check if the user is already registered
+            checkUser()
         }
+
     }
 
     private fun registerUser() {
@@ -73,5 +76,14 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // check if the user is already registered
+    private fun checkUser() {
+        // if the email is already registered in firebase show error
+        val firebaseManager = FirebaseManager()
+        val currentUser = firebaseManager.getCurrentUser()
+        if (currentUser != null) {
+            Toast.makeText(context, "Email Already Found!!", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
