@@ -1,25 +1,33 @@
 package com.example.shoesstore.ui.LoginAndReg
 
-import com.example.shoesstore.FirebaseAuth.FirebaseManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentRegisterBinding
-import com.example.shoesstore.viewmodels.DataViewModel
+import com.example.shoesstore.util.NetworkResult
+import com.example.shoesstore.util.RegisterValidation
+import com.example.shoesstore.viewmodels.RegisterViewModel
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.auth.User
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_register.buttonRegisterRegister
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-
+    private val viewModel by viewModels<RegisterViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,58 +40,81 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.registerBtn.setOnClickListener {
-            val userName = binding.UserNameEt.text.toString()
-            val password = binding.passwordEt.text.toString()
-            if (userName.isEmpty() || password.isEmpty()) {
-                Toast.makeText(context, "Please fill all the fields or Back", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (password.length < 6) {
-                binding.passwordEt.error = "Password must be at least 6 characters"
-            }
-            else {
-                registerUser()
-            }
-            // check if the user is already registered
-            checkUser()
+        binding.tvDoYouHaveAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-    }
 
-    private fun registerUser() {
-        val email = binding.UserNameEt.text.toString()
-        val password = binding.passwordEt.text.toString()
+        binding.apply {
+            buttonRegisterRegister.setOnClickListener {
+                val user = com.example.shoesstore.model.UserModel.User(
+                    edFirstNameRegister.text.toString().trim(),
+                    edLastNameRegister.text.toString().trim(),
+                    edEmailRegister.text.toString().trim(),
+                    edPasswordRegister.text.toString()
+                )
+                viewModel.createAccountWithEmailAndPassword(user)
+            }
+        }
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(context, "Please fill all the fields or go back", Toast.LENGTH_SHORT).show()
-        } else {
-            val firebaseManager = FirebaseManager()
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    firebaseManager.registerUser(email, password)
-                    withContext(Dispatchers.Main) {
-                        val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                        findNavController().navigate(action)
-                        Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.register.collect() {
+                when (it) {
+                    is NetworkResult.Loading ->{
+                        binding.buttonRegisterRegister.startAnimation()
                     }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        binding.UserNameEt.error = "Registration failed!! Invalid Email or Password"
+
+                    is NetworkResult.Success ->{
+                        Log.d("RegisterFragment", it.data.toString())
+                        buttonRegisterRegister.revertAnimation()
+                        binding.apply {
+                            edFirstNameRegister.setText("")
+                            edLastNameRegister.setText("")
+                            edEmailRegister.setText("")
+                            edPasswordRegister.setText("")
+                        }
+                        // Navigate to login fragment
+                        Snackbar.make(requireView(), "Register Success", Snackbar.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                    }
+
+                    is NetworkResult.Error ->{
+                        buttonRegisterRegister.revertAnimation()
+                        Snackbar.make(requireView(), it.message.toString(), Snackbar.LENGTH_SHORT).show()
+                    }
+
+                    else -> Unit
+                }
+
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.validation.collect{validation ->
+                if (validation.email is RegisterValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.edEmailRegister.apply {
+                            error = validation.email.message
+                            requestFocus()
+                        }
                     }
                 }
+
+                if (validation.password is RegisterValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.edPasswordRegister.apply {
+                            error = validation.password.message
+                            requestFocus()
+                        }
+                    }
+                }
+
             }
         }
-    }
 
-    // check if the user is already registered
-    private fun checkUser() {
-        // if the email is already registered in firebase show error
-        val firebaseManager = FirebaseManager()
-        val currentUser = firebaseManager.getCurrentUser()
-        if (currentUser != null) {
-            Toast.makeText(context, "Email Already Found!!", Toast.LENGTH_SHORT).show()
-        }
     }
 }
+
+
 
