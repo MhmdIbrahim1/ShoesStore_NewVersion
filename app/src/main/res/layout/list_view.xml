@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-            <variable
-                name="shoeData"
-                type="com.example.shoesstore.model.ShoeListData" />
+
+        <variable
+            name="shoeData"
+            type="com.example.shoesstore.model.ShoeListData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/indexLinear"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/row_cardView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -30,20 +31,20 @@
             app:strokeWidth="1dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
 
                 <ImageView
                     android:id="@+id/shoe_image"
                     android:layout_width="120dp"
-                    android:layout_height="160dp"
+                    android:layout_height="@dimen/_114sdp"
                     android:contentDescription="@string/image_of_shoe"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/shoe_2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/shoe_2"
                     tools:srcCompat="@drawable/shoe_2" />
 
                 <TextView
@@ -67,7 +68,7 @@
 
                 <TextView
                     android:id="@+id/shoeName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
@@ -76,7 +77,7 @@
                     android:maxLines="2"
                     android:text="@{shoeData.shoeName}"
                     android:textColor="@color/darker"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView3"
@@ -103,7 +104,7 @@
 
                 <TextView
                     android:id="@+id/showSize"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -112,7 +113,7 @@
                     android:maxLines="2"
                     android:text="@{shoeData.shoeCompany}"
                     android:textColor="@color/darker"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -176,7 +177,7 @@
 
                 <TextView
                     android:id="@+id/shoeCompany"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -212,7 +213,7 @@
 
                 <TextView
                     android:id="@+id/shoePrice"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
@@ -221,7 +222,7 @@
                     android:maxLines="2"
                     android:text="@{shoeData.shoePrice}"
                     android:textColor="@color/darker"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView11"
@@ -235,6 +236,7 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:contentDescription="@string/fav"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -244,23 +246,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/shoePrice"
                     app:layout_constraintVertical_bias="1.0"
                     app:srcCompat="@drawable/ic_favorite_bordered"
-                    app:tint="#AB1919"
-                    />
+                    app:tint="#AB1919" />
 
 
                 <ImageButton
                     android:id="@+id/deleteButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
-                    android:clickable="true"
+                    android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/white"
                     android:backgroundTintMode="src_in"
+                    android:clickable="true"
                     android:contentDescription="@string/delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.738"
+                    app:layout_constraintHorizontal_bias="0.613"
                     app:layout_constraintStart_toEndOf="@+id/shoe_image"
                     app:layout_constraintTop_toBottomOf="@+id/shoePrice"
                     app:layout_constraintVertical_bias="1.0"

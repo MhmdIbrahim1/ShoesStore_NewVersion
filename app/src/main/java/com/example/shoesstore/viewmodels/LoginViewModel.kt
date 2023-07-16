@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     val navigateState: StateFlow<Int> = _navigateState
     companion object{
         const val SHOES_FRAGMENT = 23
-        val ACCOUNT_LOGIN_FRAGMENT get() = R.id.action_shoeInfoFragment_to_shoeListFragment
+        val ACCOUNT_LOGIN_FRAGMENT get() = R.id.action_loginFragment_to_shoeListFragment
     }
 
     init {

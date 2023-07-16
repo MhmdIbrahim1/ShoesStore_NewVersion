@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/indexLinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/row_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:strokeColor="@color/lightMediumGray"
+            app:strokeWidth="1dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+
+                <ImageView
+                    android:id="@+id/shoe_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="114dp"
+                    android:contentDescription="@string/image_of_shoe"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/shoe_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@drawable/shoe_2" />
+
+
+                <TextView
+                    android:id="@+id/shoeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="name"
+                    android:textColor="@color/darker"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintStart_toStartOf="@+id/shoe_image"
+                    app:layout_constraintTop_toBottomOf="@+id/shoe_image" />
+
+
+                <TextView
+                    android:id="@+id/showSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="100"
+                    android:textColor="@color/darker"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/shoeName"
+                    app:layout_constraintStart_toEndOf="@+id/shoeName"
+                    app:layout_constraintTop_toTopOf="@+id/shoeName" />
+
+                <TextView
+                    android:id="@+id/shoeDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="description"
+                    android:textColor="@color/darker"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintStart_toStartOf="@+id/shoeCompany"
+                    app:layout_constraintTop_toBottomOf="@+id/shoeCompany" />
+
+                <TextView
+                    android:id="@+id/shoeCompany"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="company"
+                    android:textColor="@color/darker"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintStart_toStartOf="@+id/shoeName"
+                    app:layout_constraintTop_toBottomOf="@+id/shoeName" />
+
+                <TextView
+                    android:id="@+id/shoePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="price"
+                    android:textColor="@color/darker"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintStart_toStartOf="@+id/shoeDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/shoeDescription" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

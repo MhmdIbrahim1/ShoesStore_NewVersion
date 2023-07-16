@@ -20,5 +20,6 @@ data class ShoeListData(
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false
 
-
-)
+){
+    constructor():this(0,"","","","","",null,false)
+}

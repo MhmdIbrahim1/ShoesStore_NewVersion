@@ -106,4 +106,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
 
     implementation 'com.google.android.gms:play-services-auth:20.6.0'
+
+    //Color picker
+    implementation "com.github.skydoves:colorpickerview:2.2.4"
+
+    //Lifecycle
+    def lifecycle_version = "2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    //Coroutines for firebase
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1'
+
+
 }

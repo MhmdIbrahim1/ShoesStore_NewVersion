@@ -9,11 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -21,16 +24,25 @@ import com.example.shoesstore.model.ShoeListData
 import com.example.shoesstore.R
 import com.example.shoesstore.databinding.FragmentShoeListBinding
 import com.example.shoesstore.ui.ShoesList.adapter.ShoeListAdapter
+import com.example.shoesstore.ui.ShoesList.adapter.ShoesAdapter
+import com.example.shoesstore.util.NetworkResult
 import com.example.shoesstore.util.SwipeToDelete
 import com.example.shoesstore.util.hideKeyboard
 import com.example.shoesstore.util.observeOnce
 import com.example.shoesstore.viewmodels.DataViewModel
+import com.example.shoesstore.viewmodels.ShoeListViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
-class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAdapter.OnDeleteClickListener {
+class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener,
+    ShoeListAdapter.OnDeleteClickListener {
+    private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var shoesAdapter: ShoesAdapter
+
+    private val viewModel by viewModels<ShoeListViewModel>()
 
     // Binding object instance corresponding to the fragment_shoe_list.xml layout
     private var _binding: FragmentShoeListBinding? = null
@@ -49,6 +61,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
             viewModel = mDataViewModel
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +74,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detailFragment -> {
-                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailsFragment())
+                    findNavController().navigate(R.id.action_shoeListFragment_to_shoeDetailsFragment)
                     true
                 }
 
@@ -71,7 +84,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
                 }
 
                 R.id.favFragment -> {
-                    findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeInfoFragment())
+                    findNavController().navigate(R.id.action_shoeListFragment_to_shoeInfoFragment)
                     true
                 }
 
@@ -88,6 +101,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
         // Hide soft keyboard
         hideKeyboard(requireActivity())
         setUpRecyclerView()
+
         return binding.root
     }
 
@@ -113,6 +127,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
                 searchView?.isSubmitButtonEnabled = true
                 searchView?.setOnQueryTextListener(this@ShoeListFragment)
             }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.logout -> {
@@ -130,38 +145,69 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
 
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        setUpBestProductRv()
+        nestedScrollView = binding.nestedScrollMainCategory
+        nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            val reachEnd =
+                scrollY >= (nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight)
+            if (reachEnd) {
+                fetchNewData()
+            }
+        })
 
+        observeBestProducts()
+    }
+
+    private fun fetchNewData() {
+        viewModel.fetchBestProducts()
+    }
+
+    private fun observeBestProducts() {
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.bestProducts.collect {
+                when (it) {
+                    is NetworkResult.Loading -> {}
+
+                    is NetworkResult.Error -> {
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    is NetworkResult.Success -> {
+                        shoesAdapter.differ.submitList(it.data)
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
 
     private fun setUpRecyclerView() {
-       val recyclerView = binding.shoeListRecyclerView
+        val recyclerView = binding.shoeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
-            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
         binding.shoeListRecyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             )
         )
-        // Swipe to Delete
-        swipeToDelete(recyclerView)
     }
 
-
-    private fun swipeToDelete(recyclerView: RecyclerView) {
-        val swipeToDeleteCallback = object : SwipeToDelete() {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem = adapter.shoeList[viewHolder.adapterPosition]
-                // Delete Item
-                mDataViewModel.deleteShoe(deletedItem)
-                adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                restoreDeletedData(viewHolder.itemView, deletedItem)
-            }
+    fun setUpBestProductRv() {
+        shoesAdapter = ShoesAdapter()
+        binding.rvBestDealsProducts.apply {
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                2,
+                GridLayoutManager.VERTICAL,
+                false
+            )
+            adapter = shoesAdapter
         }
-        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
 
@@ -191,6 +237,7 @@ class ShoeListFragment : Fragment(), SearchView.OnQueryTextListener , ShoeListAd
         builder.setMessage("Are you sure you want to remove everything?")
         builder.create().show()
     }
+
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText != null) {
             searchThroughDatabase(newText)
